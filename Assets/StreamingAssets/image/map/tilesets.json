@@ -1,0 +1,19 @@
+{
+  "Tilesets": [
+    {
+      "Id": "1",
+      "BaseDir": "image/map/forest",
+      "Variants": ["forest_v1.png"]
+    },
+    {
+      "Id": "2",
+      "BaseDir": "image/map/mountains",
+      "Variants": ["mount_1.png", "mount_2.png"]
+    },
+    {
+      "Id": "3",
+      "BaseDir": "image/map/plant",
+      "Variants": ["grass_flowers.png"]
+    }
+  ]
+}

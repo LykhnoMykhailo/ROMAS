@@ -1,0 +1,66 @@
+{
+  "AgressivePresets": [
+    {
+      "Id": "dark_forest_wolf",
+      "Type": "Agressive",
+      "Texture": "image/map/icons/wolf_den.png",
+      "Clan": "Wolf Pack",
+      "Boss": true,
+      "PossibleRooms": ["Entrance", "Den", "Trophy_Room", "Boss_Lair"],
+      "EnemyPool": {
+        "wolf": { "min_per_room": 1, "max_per_room": 3 },
+        "wolf_leader": { "min_per_room": 0, "max_per_room": 1 }
+      }
+    },
+    {
+      "Id": "old_forest_camp",
+      "Type": "Agressive",
+      "Texture": "image/map/icons/goblin_camp.png",
+      "Clan": "Goblins",
+      "Boss": false,
+      "PossibleRooms": ["Guard_Post", "Storage", "Sleeping_Quarters"],
+      "EnemyPool": {
+        "goblin_sword": { "min_per_room": 2, "max_per_room": 4 },
+        "goblin_bow": { "min_per_room": 1, "max_per_room": 2 }
+      }
+    },
+    {
+      "Id": "rubick_tower",
+      "Type": "Agressive",
+      "Texture": "image/map/icons/mage_tower.png",
+      "Clan": "Mage Order",
+      "Boss": true,
+      "PossibleRooms": ["Library", "Laboratory", "Ritual_Circle"],
+      "EnemyPool": {
+        "tower_mage": { "min_per_room": 1, "max_per_room": 2 },
+        "great_mage": { "min_per_room": 0, "max_per_room": 1 }
+      }
+    },
+    {
+      "Id": "dark_forest_old",
+      "Type": "Agressive",
+      "Texture": "image/map/icons/undead_crypt.png",
+      "Clan": "Undead",
+      "Boss": false,
+      "PossibleRooms": ["Crypt_Entrance", "Burial_Hall", "Bone_Storage"],
+      "EnemyPool": {
+        "skeleton_swordsman": { "min_per_room": 2, "max_per_room": 3 },
+        "skeleton_archer": { "min_per_room": 0, "max_per_room": 2 }
+      }
+    }
+  ],
+  "NetralPresets": [
+    {
+      "Id": "city",
+      "Type": "Netral",
+      "Texture": "image/map/icons/city_main.png",
+      "Functions": ["Market", "Inn", "QuestGiver"]
+    },
+    {
+      "Id": "forge",
+      "Type": "Netral",
+      "Texture": "image/map/icons/forge_shop.png",
+      "Functions": ["Repair", "Upgrade", "Crafting"]
+    }
+  ]
+}
