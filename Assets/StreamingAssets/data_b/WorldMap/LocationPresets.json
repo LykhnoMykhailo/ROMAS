@@ -3,7 +3,7 @@
     {
       "Id": "dark_forest_wolf",
       "Type": "Agressive",
-      "Texture": "image/map/icons/wolf_den.png",
+      "Texture": "image/locations/dark_forest_wolf.png",
       "Clan": "Wolf Pack",
       "Boss": true,
       "PossibleRooms": ["Entrance", "Den", "Trophy_Room", "Boss_Lair"],
@@ -15,7 +15,7 @@
     {
       "Id": "old_forest_camp",
       "Type": "Agressive",
-      "Texture": "image/map/icons/goblin_camp.png",
+      "Texture": "image/locations/old_forest.png",
       "Clan": "Goblins",
       "Boss": false,
       "PossibleRooms": ["Guard_Post", "Storage", "Sleeping_Quarters"],
@@ -27,7 +27,7 @@
     {
       "Id": "rubick_tower",
       "Type": "Agressive",
-      "Texture": "image/map/icons/mage_tower.png",
+      "Texture": "image/locations/rubick_tower.png",
       "Clan": "Mage Order",
       "Boss": true,
       "PossibleRooms": ["Library", "Laboratory", "Ritual_Circle"],
@@ -39,7 +39,7 @@
     {
       "Id": "dark_forest_old",
       "Type": "Agressive",
-      "Texture": "image/map/icons/undead_crypt.png",
+      "Texture": "image/locations/swamp.png",
       "Clan": "Undead",
       "Boss": false,
       "PossibleRooms": ["Crypt_Entrance", "Burial_Hall", "Bone_Storage"],
@@ -53,13 +53,13 @@
     {
       "Id": "city",
       "Type": "Netral",
-      "Texture": "image/map/icons/city_main.png",
+      "Texture": "image/locations/forge.png",
       "Functions": ["Market", "Inn", "QuestGiver"]
     },
     {
       "Id": "forge",
       "Type": "Netral",
-      "Texture": "image/map/icons/forge_shop.png",
+      "Texture": "image/locations/forge.png",
       "Functions": ["Repair", "Upgrade", "Crafting"]
     }
   ]
