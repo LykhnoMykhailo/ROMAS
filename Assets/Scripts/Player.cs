@@ -59,7 +59,7 @@ namespace GameCore.Entities
             this.exp = 0;
 
             // Початкова позиція в центрі глобальної карти
-            this.position = new Vector2(500, 500);
+            this.position = new Vector2(1, 1);
 
             // Базові характеристики
             this.st = 10;

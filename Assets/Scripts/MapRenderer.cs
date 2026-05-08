@@ -5,11 +5,10 @@ using map_test;
 
 public class MapRenderer : MonoBehaviour
 {
-    [Header("Налаштування Tilemap")]
-    public Tilemap backgroundTilemap; // Шар для трави/лісу
-    public Tilemap locationsTilemap;  // Шар для іконок локацій (Order in Layer = 1)
+    [Header("Шари Tilemap")]
+    public Tilemap backgroundTilemap;
+    public Tilemap locationsTilemap;
 
-    [Header("Параметри вікна (Pygame Legacy)")]
     private const int ViewWidth = 23;
     private const int ViewHeight = 19;
     private const int OffX = 11;
@@ -19,10 +18,9 @@ public class MapRenderer : MonoBehaviour
 
     public void UpdateView(WorldMap map, int playerX, int playerY)
     {
-        // Перевірка самого об'єкта карти та матриці
         if (map == null || map.WorldMapMatrix == null) return;
 
-        // Очищення шарів (переконайся, що вони призначені в Inspector!)
+        // Очищення перед малюванням
         if (backgroundTilemap != null) backgroundTilemap.ClearAllTiles();
         if (locationsTilemap != null) locationsTilemap.ClearAllTiles();
 
@@ -37,58 +35,36 @@ public class MapRenderer : MonoBehaviour
                 {
                     // 1. Ландшафт
                     WordMapTile tileData = map.WorldMapMatrix[mx][my];
-                    if (tileData != null)
-                        DrawTile(backgroundTilemap, tileData._texture, i, b);
+                    if (tileData != null) DrawTile(backgroundTilemap, tileData._texture, i, b);
 
                     // 2. Локації
                     string key = $"{mx},{my}";
-
-                    // ВАЖЛИВО: додаємо перевірку на null для Locations
                     if (map.Locations != null && map.Locations.ContainsKey(key))
                     {
                         var loc = map.Locations[key];
-                        if (loc != null)
-                        {
-                            // Debug допоможе побачити в консолі, чи знайшлась локація
-                            Debug.Log($"[MapRenderer] Малюю локацію: {loc.Id} на {key}");
-                            DrawTile(locationsTilemap, loc.Texture, i, b);
-                        }
+                        if (loc != null) DrawTile(locationsTilemap, loc.Texture, i, b);
                     }
                 }
             }
         }
     }
 
-
     private void DrawTile(Tilemap tm, string path, int x, int y)
     {
         if (string.IsNullOrEmpty(path)) return;
 
         Sprite s = GetSprite(path);
-
-        // Створюємо тайл у будь-якому випадку для тесту
-        Tile t = ScriptableObject.CreateInstance<Tile>();
-
         if (s != null)
         {
+            Tile t = ScriptableObject.CreateInstance<Tile>();
             t.sprite = s;
-            t.color = Color.white; // Звичайна картинка
+            tm.SetTile(new Vector3Int(x, y, 0), t);
         }
-        else
-        {
-            // ЯКЩО СПРАЙТ НЕ ЗНАЙДЕНО — МАЛЮЄМО ЧЕРВОНИЙ КВАДРАТ
-            // (Це допоможе зрозуміти, що код "влучив" у правильне місце)
-            t.sprite = null;
-            t.color = Color.red;
-            Debug.LogWarning($"[MapRenderer] Малюю ПОРОЖНІЙ тайл на {x},{y} через відсутність спрайту: {path}");
-        }
-
-        tm.SetTile(new Vector3Int(x, y, 0), t);
     }
 
     private Sprite GetSprite(string path)
     {
-        // Очищення шляху для Resources.Load
+        // Очищення шляху для Unity Resources
         string cleanPath = path.Replace(".png", "").Replace(".jpg", "");
         if (cleanPath.Contains("Resources/"))
             cleanPath = cleanPath.Substring(cleanPath.IndexOf("Resources/") + 10);
@@ -97,6 +73,8 @@ public class MapRenderer : MonoBehaviour
 
         Sprite s = Resources.Load<Sprite>(cleanPath);
         if (s != null) _spriteCache[cleanPath] = s;
+        else Debug.LogWarning($"[MapRenderer] Не знайдено спрайт: {cleanPath}");
+
         return s;
     }
 }

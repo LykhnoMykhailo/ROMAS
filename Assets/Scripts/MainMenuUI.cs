@@ -21,7 +21,6 @@ public class MainMenuUI : MonoBehaviour
 
         // Підписка на події
         createButton.onClick.AddListener(OnCreateClicked);
-        loadButton.onClick.AddListener(OnLoadClicked);
         exitButton.onClick.AddListener(OnExitClicked);
     }
 
