@@ -80,8 +80,38 @@ public class SaveManagerUI : MonoBehaviour
 
     public void LoadGame(string worldName)
     {
+        // Спочатку завантажуємо дані
         GameManager.Instance.LoadGame(worldName);
-        CloseMenu();
+
+        // Тепер закриваємо меню слотів БЕЗ активації головного меню
+        gameObject.SetActive(false);
+    }
+
+    public void CloseMenu()
+    {
+        if (this == null || gameObject == null) return;
+
+        // 1. Вимикаємо вікно завантаження
+        gameObject.SetActive(false);
+
+        // 2. Логіка повернення (тільки якщо ми НЕ завантажили гру щойно)
+        // Якщо гра на паузі — повертаємося до InGameMenu (воно вже активне)
+        if (GameManager.Instance.currentState == GameState.Pause)
+        {
+            Debug.Log("Повернення до паузи");
+        }
+        // Якщо гра в стані WorldMap — значить завантаження пройшло успішно, 
+        // меню взагалі не треба чіпати
+        else if (GameManager.Instance.currentState == GameState.WorldMap)
+        {
+            Debug.Log("Гра завантажена, меню не потрібне");
+        }
+        else
+        {
+            // Тільки якщо ми реально в головному меню — вмикаємо його назад
+            if (GameManager.Instance.mainMenuCanvas != null)
+                GameManager.Instance.mainMenuCanvas.SetActive(true);
+        }
     }
 
     public void DeleteGame(string worldName)
@@ -94,8 +124,5 @@ public class SaveManagerUI : MonoBehaviour
         }
     }
 
-    public void CloseMenu()
-    {
-        this.gameObject.SetActive(false);
-    }
+    
 }

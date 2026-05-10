@@ -1,64 +1,69 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace GameCore.Entities
 {
-    /// <summary>
-    /// Клас інвентарю згідно з діаграмою image_76045b.png.
-    /// Використовує динамічні списки для зберігання різних типів ігрових об'єктів.
-    /// </summary>
     [Serializable]
     public class Inventory
     {
-        // Використовуємо List<object> для максимальної гнучкості, 
-        // щоб списки самі могли приймати будь-який тип даних.
+        // Тепер ми використовуємо один список слотів для всього
+        public List<InventorySlot> slots = new List<InventorySlot>();
 
-        /// <summary>
-        /// Список зброї (weapons)
-        /// </summary>
-        public List<object> weapons;
-
-        /// <summary>
-        /// Список предметів (iitems)
-        /// </summary>
-        public List<object> iitems;
-
-        /// <summary>
-        /// Список рун (runes)
-        /// </summary>
-        public List<object> runes;
+        // Окреме посилання для швидкого доступу до екіпірованої зброї
+        public Weapon equippedWeapon;
 
         public Inventory()
         {
-            weapons = new List<object>();
-            iitems = new List<object>();
-            runes = new List<object>();
+            slots = new List<InventorySlot>();
         }
 
-        /// <summary>
-        /// Додати предмет до відповідного списку.
-        /// </summary>
-        public void AddItem(string category, object item)
+        // Логіка додавання предметів
+        public void AddItem(Item newItem, int amount = 1)
         {
-            switch (category.ToLower())
+            // 1. Перевіряємо, чи це зброя. У Skyrim зброя зазвичай не стакується.
+            if (newItem is Weapon)
             {
-                case "weapon":
-                case "weapons":
-                    weapons.Add(item);
-                    break;
-                case "item":
-                case "iitems":
-                case "items":
-                    iitems.Add(item);
-                    break;
-                case "rune":
-                case "runes":
-                    runes.Add(item);
-                    break;
-                default:
-                    UnityEngine.Debug.LogWarning($"[Inventory] Невідома категорія: {category}");
-                    break;
+                slots.Add(new InventorySlot(newItem, 1));
+                return;
             }
+
+            // 2. Якщо це не зброя (наприклад, зілля чи руна), шукаємо існуючий стак
+            var existingSlot = slots.Find(s => s.item.Pname == newItem.Pname);
+
+            if (existingSlot != null)
+            {
+                existingSlot.count += amount;
+            }
+            else
+            {
+                // 3. Якщо такого предмета ще немає — створюємо новий слот
+                slots.Add(new InventorySlot(newItem, amount));
+            }
+        }
+
+        // Метод для продажу (зменшення кількості)
+        public void RemoveItem(Item item, int amount = 1)
+        {
+            var slot = slots.Find(s => s.item == item);
+            if (slot != null)
+            {
+                slot.count -= amount;
+                if (slot.count <= 0) slots.Remove(slot);
+            }
+        }
+    }
+
+    [Serializable]
+    public class InventorySlot
+    {
+        public Item item;
+        public int count;
+
+        public InventorySlot(Item newItem, int newCount)
+        {
+            item = newItem;
+            count = newCount;
         }
     }
 }

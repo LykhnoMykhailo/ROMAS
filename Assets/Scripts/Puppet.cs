@@ -18,7 +18,7 @@ namespace GameCore.Entities
         public float ag; // Agility
         public float kn; // Knowledge
         public float mp; // Magical Power
-
+        public string equippedWeaponName;
         [Header("Системи")]
         public Inventory inventory;
         public int lvl;
@@ -45,7 +45,7 @@ namespace GameCore.Entities
         [Header("Стан та Ефекти")]
         [JsonProperty("effects")]
         public List<Effect> effects; // ЗАМІНЕНО: Використовуємо клас Effect замість BaseEffect
-        public string weapon_use; // Поточна зброя
+        public Weapon Weapon_use; // Поточна зброя
 
         [Header("Бойові параметри")]
         [JsonIgnore]

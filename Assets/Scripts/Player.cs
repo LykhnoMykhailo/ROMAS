@@ -6,25 +6,16 @@ using UnityEngine;
 
 namespace GameCore.Entities
 {
-    /// <summary>
-    /// Клас гравця, що успадковується від Puppet.
-    /// Додано властивості X/Y для синхронізації з рендерером карти.
-    /// </summary>
     [Serializable]
     public class Player : Puppet
     {
         [Header("Дані Гравця")]
         public float money;
 
-        /// <summary>
-        /// Позиція гравця на загальній (глобальній) мапі.
-        /// </summary>
         public Vector2 position;
 
-        // Властивості для швидкого доступу до цілочисельних координат (для індексів масиву)
         [JsonIgnore]
         public int X => (int)position.x;
-
         [JsonIgnore]
         public int Y => (int)position.y;
 
@@ -46,10 +37,6 @@ namespace GameCore.Entities
             this.position = Vector2.zero;
         }
 
-        /// <summary>
-        /// Ініціалізація нового гравця при створенні світу.
-        /// Встановлює початкову позицію в центрі мапи 1000x1000.
-        /// </summary>
         public void InitializeNewPlayer(string playerName, string startMapName)
         {
             this.Pname = playerName;
@@ -57,78 +44,85 @@ namespace GameCore.Entities
             this.money = 100;
             this.lvl = 1;
             this.exp = 0;
-
-            // Початкова позиція в центрі глобальної карти
             this.position = new Vector2(1, 1);
 
-            // Базові характеристики
             this.st = 10;
             this.ag = 10;
             this.kn = 10;
             this.mp = 10;
 
-            calculate_base_stats(10f, 5f);
+            // Важливо: додаємо саме Weapon
+            inventory.AddItem(new Weapon { Pname = "Залізний меч", price = 50, base_damage = 10, description = "Старий добрий меч." });
+            inventory.AddItem(new Weapon { Pname = "Залізний2 меч2", price = 60, base_damage = 12, description = "Старий добрий меч." });
+            inventory.AddItem(new Item { Pname = "Зілля лікування", price = 20, description = "Відновлює здоров'я." }, 5);
 
-            Debug.Log($"<color=cyan>[Player]</color> Персонаж <b>{this.Pname}</b> ініціалізований на позиції {this.position}.");
+            calculate_base_stats(10f, 5f);
         }
 
         #region Система Збереження та Завантаження
 
         public void SavePlayerData(string folderPath)
         {
+            // Перед збереженням фіксуємо назву зброї в руках
+            this.equippedWeaponName = (Weapon_use != null) ? Weapon_use.Pname : "";
+
             JsonSerializerSettings settings = new JsonSerializerSettings
             {
                 ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
-                Formatting = Formatting.Indented
+                Formatting = Formatting.Indented,
+                // КРИТИЧНО: зберігає інформацію про те, що об'єкт - це Weapon, а не Item
+                TypeNameHandling = TypeNameHandling.Auto
             };
 
             string json = JsonConvert.SerializeObject(this, settings);
             string fullPath = Path.Combine(folderPath, "Player.json");
 
             File.WriteAllText(fullPath, json);
-            Debug.Log($"[Player] Дані збережено: {fullPath}");
+            Debug.Log($"[Save] Збережено. Зброя в руках: {equippedWeaponName}");
         }
 
         public static Player LoadPlayer(string worldName)
         {
             string filePath = Path.Combine(Application.persistentDataPath, "Saves", worldName, "Player.json");
 
-            if (!File.Exists(filePath))
-            {
-                Debug.LogError("Файл гравця не знайдено!");
-                return null;
-            }
+            if (!File.Exists(filePath)) return null;
 
             try
             {
                 string json = File.ReadAllText(filePath);
                 JsonSerializerSettings settings = new JsonSerializerSettings
                 {
-                    ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+                    ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
+                    TypeNameHandling = TypeNameHandling.Auto // Дозволяє відрізнити Weapon від Item
                 };
 
                 Player loadedPlayer = JsonConvert.DeserializeObject<Player>(json, settings);
-                Debug.Log($"[Player] Дані гравця завантажені для світу: {worldName}");
+
+                // Відновлення посилання на Weapon_use
+                if (loadedPlayer != null && !string.IsNullOrEmpty(loadedPlayer.equippedWeaponName))
+                {
+                    // Шукаємо в інвентарі об'єкт, який є зброєю і має таку саму назву
+                    var foundSlot = loadedPlayer.inventory.slots.Find(s =>
+                        s.item is Weapon && s.item.Pname == loadedPlayer.equippedWeaponName);
+
+                    if (foundSlot != null)
+                    {
+                        loadedPlayer.Weapon_use = foundSlot.item as Weapon;
+                    }
+                }
+
                 return loadedPlayer;
             }
             catch (Exception ex)
             {
-                Debug.LogError($"Помилка завантаження гравця: {ex.Message}");
+                Debug.LogError($"Помилка завантаження: {ex.Message}");
                 return null;
             }
         }
 
         #endregion
 
-        public void AddMoney(float amount)
-        {
-            this.money += amount;
-            Debug.Log($"[Player] Отримано {amount} золота. Баланс: {this.money}");
-        }
-
-        public bool CanAfford(float cost)
-        {
-            return this.money >= cost;
-        }
+        public void AddMoney(float amount) { this.money += amount; }
+        public bool CanAfford(float cost) { return this.money >= cost; }
     }
 }
