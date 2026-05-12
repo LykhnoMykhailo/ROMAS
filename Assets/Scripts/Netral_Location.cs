@@ -20,10 +20,9 @@ public class Netral_Location : Task_Location
 
     public override void OnInteract()
     {
-        // Використовуємо кольорове маркування для зручності в консолі Unity
-        Debug.Log($"<color=green>[Trade]</color> Відкрито торгівлю з <b>{Shop}</b>. Доступно квестів: {Quests.Count}");
-
-        // Тут буде логіка відкриття UI вікна маркету або діалогу
-        // UIManager.Instance.OpenShop(Shop, Quests);
+        // Повідомляємо GameManager, що ми в місті/магазині
+        GameManager.Instance.ChangeState(GameState.Shop);
+        // Передаємо дані про магазин в UI
+        GameManager.Instance.shopUI.OpenShop();
     }
 }

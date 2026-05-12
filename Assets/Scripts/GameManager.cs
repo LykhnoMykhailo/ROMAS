@@ -5,8 +5,7 @@ using map_test;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public enum GameState { MainMenu, WorldMap, Battle, Pause, Inventory }
-
+public enum GameState { MainMenu, WorldMap, Battle, Pause, Inventory, Shop }
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
@@ -40,15 +39,48 @@ public class GameManager : MonoBehaviour
         else if (currentState == GameState.Inventory)
             ChangeState(GameState.WorldMap);
     }
+    [Header("Магазин")]
+    public ShopUI shopUI;
+
     public void ChangeState(GameState newState)
     {
         currentState = newState;
+
+        // Зупиняємо час у магазині, як і в інвентарі
+        Time.timeScale = (newState == GameState.Pause || newState == GameState.Inventory || newState == GameState.Shop) ? 0f : 1f;
+
+        if (newState == GameState.WorldMap)
+        {
+            // 1. Вмикаємо все необхідне
+            if (mapRenderer != null) mapRenderer.gameObject.SetActive(true);
+            if (visualPlayer != null) visualPlayer.SetActive(true);
+            if (hudManager != null) hudManager.gameObject.SetActive(true);
+
+            // 2. Скидаємо камеру на сітку мапи
+            if (cameraController != null) cameraController.SetupCamera();
+
+            if (visualPlayer != null && cameraController != null)
+            {
+                visualPlayer.SetActive(true);
+                float pX = cameraController.gridTransform.position.x + 11.5f;
+                float pY = cameraController.gridTransform.position.y + 9.5f;
+                visualPlayer.transform.position = new Vector3(pX, pY, -1f);
+            }
+        }
+
+        // Логіка вікна магазину
+        if (shopUI != null)
+        {
+            shopUI.gameObject.SetActive(newState == GameState.Shop);
+            if (newState == GameState.Shop) shopUI.OpenShop();
+        }
 
         // 1. Керування часом
         Time.timeScale = (newState == GameState.Pause || newState == GameState.Inventory) ? 0f : 1f;
 
         // 2. HUD (Тексти на карті)
         if (hudManager != null)
+
             hudManager.gameObject.SetActive(newState == GameState.WorldMap);
 
         // 3. Меню паузи (Esc)
@@ -70,6 +102,18 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
+        string dbPath = Path.Combine(Application.streamingAssetsPath, "data_b/Weapons/Weapons.json");
+
+        if (File.Exists(dbPath))
+        {
+            string jsonContent = File.ReadAllText(dbPath);
+            WeaponDatabase.Initialize(jsonContent);
+            Debug.Log("<color=green>[WeaponDatabase]</color> Базу завантажено зі StreamingAssets.");
+        }
+        else
+        {
+            Debug.LogError($"[WeaponDatabase] Файл не знайдено за шляхом: {dbPath}");
+        }
         if (Instance == null)
         {
             Instance = this;
@@ -81,12 +125,50 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
-        if (Keyboard.current != null && Keyboard.current.escapeKey.wasPressedThisFrame)
+        if (Keyboard.current == null) return;
+
+        // Пауза на Esc
+        if (Keyboard.current.escapeKey.wasPressedThisFrame)
         {
             ToggleInGameMenu();
         }
-    }
 
+        // Взаємодія на E
+        if (Keyboard.current.eKey.wasPressedThisFrame && currentState == GameState.WorldMap)
+        {
+            CheckInteraction();
+        }
+    }
+    private void CheckInteraction()
+    {
+        if (currentPlayer == null || mapManager.CurrentMap == null)
+        {
+            Debug.LogError("<color=red>[Shop-Debug]</color> Гравець або Карта не ініціалізовані!");
+            return;
+        }
+
+        int px = currentPlayer.X;
+        int py = currentPlayer.Y;
+
+        Debug.Log($"<color=cyan>[Shop-Debug]</color> Намагаємось взаємодіяти. Координати гравця: {px}, {py}");
+
+        // 1. Отримуємо локацію через твій метод
+        // 1. Отримуємо локацію на координатах гравця
+        Location_tile loc = mapManager.CurrentMap.GetLocation(px, py);
+
+        if (loc != null)
+        {
+            Debug.Log($"<color=green>[Interaction]</color> Взаємодія з локацією: {loc.Id}");
+
+            // 2. Просто викликаємо Interact(). 
+            // Вона сама знає, викликати OnInteract() з Netral_Location чи Agressive_Location
+            loc.Interact();
+        }
+        else
+        {
+            Debug.LogWarning($"<color=yellow>[Interaction]</color> На координатах {px},{py} порожньо.");
+        }
+    }
     public void ToggleInGameMenu()
     {
         if (currentState == GameState.MainMenu) return;
@@ -96,7 +178,10 @@ public class GameManager : MonoBehaviour
         else
             ChangeState(GameState.Pause);
     }
-
+    public void CloseShop()
+    {
+        ChangeState(GameState.WorldMap);
+    }
     public void OpenLoadMenuFromPause()
     {
         if (saveManagerUI != null)

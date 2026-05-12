@@ -67,6 +67,61 @@ namespace GameCore.Entities
         public string cords; // Поле з діаграми
 
         public string Pname;
+        [Header("Налаштування прогресії")]
+        public float exp_to_next_level = 100f; // Скільки треба для 2 рівня
+        public float exp_multiplier = 1.2f;    // Коефіцієнт подорожчання рівня
+
+        /// <summary>
+        /// Підвищує рівень істоти, додає характеристики та знімає досвід.
+        /// </summary>
+        public void level_up()
+        {
+            if (this.exp >= this.exp_to_next_level)
+            {
+                // 1. Списуємо досвід
+                this.exp -= this.exp_to_next_level;
+
+                // 2. Збільшуємо рівень
+                this.lvl++;
+
+                // 3. Додаємо характеристики (приріст з діаграми)
+                this.st += this.st_lvl;
+                this.ag += this.ag_lvl;
+                this.kn += this.kn_lvl;
+                this.mp += this.mp_lvl;
+
+                // 4. Перераховуємо базове HP/Mana (з урахуванням нових статів)
+                // Наприклад, з коефіцієнтами 10 та 5
+                calculate_base_stats(10f, 5f);
+
+                // 5. Збільшуємо вартість наступного рівня
+                this.exp_to_next_level = Mathf.Round(this.exp_to_next_level * this.exp_multiplier);
+
+                Debug.Log($"[Puppet] {Pname} підняв рівень до {lvl}! Наступний рівень коштує {exp_to_next_level}");
+
+                // Рекурсія: якщо досвіду настільки багато, що вистачає на ще один рівень
+                if (this.exp >= this.exp_to_next_level)
+                {
+                    level_up();
+                }
+            }
+            else
+            {
+                Debug.Log($"[Puppet] Недостатньо досвіду для рівня. Треба: {exp_to_next_level - exp}");
+            }
+        }
+
+        /// <summary>
+        /// Додає досвід і автоматично перевіряє можливість підвищення рівня.
+        /// </summary>
+        public void add_exp(float amount)
+        {
+            this.exp += amount;
+            if (this.exp >= this.exp_to_next_level)
+            {
+                level_up();
+            }
+        }
 
         public Puppet()
         {

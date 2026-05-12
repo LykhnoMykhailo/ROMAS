@@ -17,7 +17,10 @@ namespace GameCore.Entities
         {
             slots = new List<InventorySlot>();
         }
-
+        public void Use_weapon(Weapon weapon)
+        {
+            equippedWeapon = weapon;
+        }
         // Логіка додавання предметів
         public void AddItem(Item newItem, int amount = 1)
         {

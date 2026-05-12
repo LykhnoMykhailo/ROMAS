@@ -93,8 +93,16 @@ public class InventoryUI : MonoBehaviour
         var player = GameManager.Instance.currentPlayer;
         if (selectedSlot == null || player == null || !(selectedSlot.item is Weapon w)) return;
 
-        if (player.Weapon_use == w) player.Weapon_use = null;
-        else player.Weapon_use = w;
+        if (player.Weapon_use == w)
+        {
+            player.Weapon_use = null;
+            player.inventory.Use_weapon(null);
+        }
+        else
+        {
+            player.Weapon_use = w;
+            player.inventory.Use_weapon(w);
+        }
 
         RefreshUI();
         ShowDetails(selectedSlot); // Оновлюємо текст на кнопці, щоб вона не зникала

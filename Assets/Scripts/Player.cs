@@ -51,10 +51,15 @@ namespace GameCore.Entities
             this.kn = 10;
             this.mp = 10;
 
-            // Важливо: додаємо саме Weapon
-            inventory.AddItem(new Weapon { Pname = "Залізний меч", price = 50, base_damage = 10, description = "Старий добрий меч." });
-            inventory.AddItem(new Weapon { Pname = "Залізний2 меч2", price = 60, base_damage = 12, description = "Старий добрий меч." });
-            inventory.AddItem(new Item { Pname = "Зілля лікування", price = 20, description = "Відновлює здоров'я." }, 5);
+            Weapon starter = WeaponDatabase.GetWeaponByName("Метальний_кинджал");
+
+            if (starter != null)
+            {
+                inventory.AddItem(starter);
+                inventory.Use_weapon(starter);
+                this.equippedWeaponName = starter.Pname;
+
+            }
 
             calculate_base_stats(10f, 5f);
         }

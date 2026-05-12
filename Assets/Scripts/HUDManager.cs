@@ -9,7 +9,16 @@ public class HUDManager : MonoBehaviour
     public TMP_Text hpText;
     public TMP_Text mpText;
     public TMP_Text coordinatesText;
+    public void UpdateHUD()
+    {
+        if (GameManager.Instance.currentPlayer != null)
+        {
+            // Припустимо, у вас є текстове поле для грошей
+            // moneyText.text = $"Gold: {GameManager.Instance.currentPlayer.money}";
 
+            Debug.Log($"[HUD] Інтерфейс оновлено. Гроші: {GameManager.Instance.currentPlayer.money}");
+        }
+    }
     private void Update()
     {
         var gm = GameManager.Instance;

@@ -38,15 +38,15 @@ public class Agressive_Location : Task_Location
     /// </summary>
     public override void OnInteract()
     {
-        Debug.Log($"<color=red>[Battle]</color> Вхід у лігво клану <b>{Clan}</b>.");
-        Debug.Log($"Генерація {CountOfRoom} кімнат на полотні локації...");
+        GameManager gm = GameManager.Instance;
 
-        if (Boss)
-        {
-            Debug.LogWarning("УВАГА: У цій локації присутній БОС!");
-        }
+        // Змінюємо стан, щоб вимкнути керування мапою
+        gm.ChangeState(GameState.Battle);
 
-        // В Unity тут зазвичай викликається SceneManager або запуск процедурної генерації об'єктів
-        // GenerateInterior(); 
+        // Ховаємо рендерер мапи світу (вона залишається в пам'яті, але не вантажить відеокарту)
+        gm.mapRenderer.gameObject.SetActive(false);
+
+        // Викликаємо старт бою
+        BattleManager.Instance.StartBattle(this);
     }
 }
