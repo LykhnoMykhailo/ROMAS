@@ -8,6 +8,7 @@ using UnityEngine;
 // Newtonsoft буде використовувати це поле, щоб розуміти, який це саме клас (Agressive чи Netral)
 public abstract class Task_Location
 {
+
     // Ідентифікатор типу для Newtonsoft (альтернатива JsonDerivedType)
     [JsonProperty("Type")]
     public string Type { get; set; }

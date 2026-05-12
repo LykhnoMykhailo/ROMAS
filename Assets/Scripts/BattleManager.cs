@@ -6,9 +6,8 @@ public class BattleManager : MonoBehaviour
     public static BattleManager Instance { get; private set; }
 
     [Header("Посилання")]
-    public GameObject arenaContainer; // Об'єкт BattleArenaContainer
-    public Transform playerSpawnPoint; // Точка (0,0,0) на арені
-    public GameObject dummyPrefab;    // Префаб манекена
+    public GameObject arenaContainer;
+    public Transform playerSpawnPoint;
 
     private void Awake() => Instance = this;
 
@@ -16,35 +15,25 @@ public class BattleManager : MonoBehaviour
     {
         arenaContainer.SetActive(true);
 
-        // 1. Беремо посилання на візуального гравця з GameManager
+        // 1. Очищення та налаштування ліміту
+        LevelGenerator.Instance.ClearDungeon();
+        //LevelGenerator.Instance.totalRoomsLimit = data.CountOfRoom;
+
+        // 2. Генерація
+        LevelGenerator.Instance.StartDungeonGeneration();
+
+        // 3. Телепортація гравця
         GameObject playerObj = GameManager.Instance.visualPlayer;
+        playerObj.transform.position = Vector3.zero;
 
-        // 2. Телепортуємо його в точку спавну арени
-        playerObj.transform.position = playerSpawnPoint.position;
-
-        // 3. Додаємо/Активуємо бойову логіку
-        // Наприклад, якщо у тебе рух на мапі і в бою різний:
-        // playerObj.GetComponent<MapMovement>().enabled = false;
-        // playerObj.GetComponent<ArenaMovement>().enabled = true;
-
-        Debug.Log("<color=green>[Battle]</color> Гравця перенесено на арену.");
-
-        SpawnTrainingDummy();
-    }
-
-    private void SpawnTrainingDummy()
-    {
-        if (dummyPrefab != null)
-        {
-            GameObject dummy = Instantiate(dummyPrefab, playerSpawnPoint.position + new Vector3(3, 0, 0), Quaternion.identity);
-            dummy.transform.SetParent(arenaContainer.transform);
-            dummy.name = "Test_Dummy";
-        }
+        Debug.Log($"<color=green>[Battle]</color> Данж згенеровано на {data.CountOfRoom} кімнат.");
     }
 
     public void EndBattle()
     {
+        LevelGenerator.Instance.ClearDungeon();
         arenaContainer.SetActive(false);
-        // Повертаємо гравця в логіку мапи світу (код додамо пізніше)
+        GameManager.Instance.ChangeState(GameState.WorldMap);
+        GameManager.Instance.mapRenderer.gameObject.SetActive(true);
     }
 }

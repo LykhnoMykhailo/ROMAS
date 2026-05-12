@@ -7,6 +7,7 @@ using UnityEngine; // Для Debug.Log
 [System.Serializable]
 public class Agressive_Location : Task_Location
 {
+    private GameManager gm;
     // Дані про фракцію/власника локації
     public string Clan { get; set; }
 
@@ -48,5 +49,9 @@ public class Agressive_Location : Task_Location
 
         // Викликаємо старт бою
         BattleManager.Instance.StartBattle(this);
+    }
+    public void end_battle()
+    {
+        
     }
 }

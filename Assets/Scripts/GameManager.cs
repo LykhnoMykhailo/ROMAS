@@ -9,7 +9,7 @@ public enum GameState { MainMenu, WorldMap, Battle, Pause, Inventory, Shop }
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
-
+    Location_tile loc;
     [Header("—истеми")]
     public MapManager mapManager;
     public MapRenderer mapRenderer;
@@ -55,7 +55,9 @@ public class GameManager : MonoBehaviour
             if (mapRenderer != null) mapRenderer.gameObject.SetActive(true);
             if (visualPlayer != null) visualPlayer.SetActive(true);
             if (hudManager != null) hudManager.gameObject.SetActive(true);
-
+            if (loc != null)
+            {
+            }
             // 2. —кидаЇмо камеру на с≥тку мапи
             if (cameraController != null) cameraController.SetupCamera();
 
