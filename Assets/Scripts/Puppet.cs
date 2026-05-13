@@ -104,6 +104,7 @@ namespace GameCore.Entities
                 {
                     level_up();
                 }
+                calculate_base_stats(1, 1);
             }
             else
             {
@@ -196,8 +197,8 @@ namespace GameCore.Entities
         /// </summary>
         public virtual void calculate_base_stats(float hp_multy, float mana_multy)
         {
-            this.hp = this.hp * this.st * hp_multy;
-            this.mana = this.mana * this.kn * mana_multy;
+            this.hp = 10 * (this.st * hp_multy);
+            this.mana = 10 * (this.kn * mana_multy);
 
             this.hp_battle = this.hp;
             this.mana_battle = this.mana;

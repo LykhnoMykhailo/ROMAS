@@ -1,0 +1,64 @@
+{
+  "Pname": "Орк-рубака",
+  "playerClass": "Orc_Warrior",
+  "lvl": 1,
+  "st": 14.0,
+  "ag": 6.0,
+  "kn": 4.0,
+  "mp": 2.0,
+  "st_lvl": 1.5,
+  "ag_lvl": 0.5,
+  "kn_lvl": 0.2,
+  "mp_lvl": 0.1,
+  "hp": 140.0,
+  "mana": 40.0,
+  "armor": 2.0,
+  "speed": 3.5,
+  "size": 1.2,
+  "exp": 0.0,
+  "exp_to_next_level": 150.0,
+  "exp_multiplier": 1.25,
+  "equippedWeaponName": "Ороча сокира",
+  "Weapon_use": {
+    "$type": "GameCore.Entities.Weapon, Assembly-CSharp",
+    "Pname": "Ороча сокира",
+    "price": 0.0,
+    "description": "Важка іржава сокира, що завдає нищівних ударів.",
+    "base_damage": 4.0,
+    "scale_strength": 1.2,
+    "scale_agility": 0.0,
+    "scale_knowledge": 0.0,
+    "attack_type": "melee",
+    "projectile_type": "none",
+    "player_usable": false,
+    "shop": false
+  },
+  "inventory": {
+    "slots": [
+      {
+        "item": {
+          "$type": "GameCore.Entities.Weapon, Assembly-CSharp",
+          "Pname": "Ороча сокира",
+          "base_damage": 4.0,
+          "scale_strength": 1.2,
+          "scale_agility": 0.0,
+          "scale_knowledge": 0.0,
+          "attack_type": "melee",
+          "projectile_type": "none"
+        },
+        "count": 1
+      }
+    ],
+    "equippedWeapon": null
+  },
+  "skills": [],
+  "book": [],
+  "effects": [],
+  "textures": [
+    "Sprites/Enemies/Orc_Idle",
+    "Sprites/Enemies/Orc_Walk"
+  ],
+  "cords": "Orc_Cords_Default",
+  "posBattleX": 0.0,
+  "posBattleY": 0.0
+}

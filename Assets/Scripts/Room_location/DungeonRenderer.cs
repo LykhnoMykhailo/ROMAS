@@ -33,7 +33,7 @@ public class DungeonRenderer : MonoBehaviour
 
             GameObject roomObj = Instantiate(prefabToSpawn, worldPos, Quaternion.identity, transform);
             Room roomScript = roomObj.GetComponent<Room>();
-
+            PopulateRoomWithEnemies(roomScript, data);
             if (data.gridPos == Vector2Int.zero)
             {
                 startRoomScript = roomScript;
@@ -64,6 +64,22 @@ public class DungeonRenderer : MonoBehaviour
         return location.GeneratedRooms.Exists(r => r.gridPos == direction);
     }
 
+    private void PopulateRoomWithEnemies(Room roomScript, RoomData data)
+    {
+        // Не спавним ворогів у стартовій кімнаті (0,0)
+        if (data.gridPos == Vector2Int.zero) return;
+
+        // Проходимо по всіх точках спавну ворогів, які ви розставили в префабі кімнати
+        foreach (Transform p in roomScript.enemyPoints)
+        {
+            // Шанс спавну (наприклад, 70%)
+            if (Random.value < 0.7f)
+            {
+                // Викликаємо наш спавнер для створення орка
+                EnemySpawner.Instance.SpawnEnemyAtPoint("orc", p);
+            }
+        }
+    }
     private void ApplyWallRendering(RoomData data, Room roomScript)
     {
         // Рендеримо стіни з урахуванням твого зміщення 0.5

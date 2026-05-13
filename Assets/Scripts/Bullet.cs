@@ -7,12 +7,25 @@ public class Bullet : Element
     public float maxRange;
     protected Vector3 startPosition;
 
+    private string targetTag; // Кого ми б'ємо
+
+    public void SetOwner(GameObject sender)
+    {
+        // Якщо стріляє гравець — ціль вороги, якщо ворог — ціль гравець
+        if (sender.CompareTag("Player"))
+        {
+            targetTag = "Enemy";
+        }
+        else if (sender.CompareTag("Enemy"))
+        {
+            targetTag = "Player";
+        }
+    }
+
     public override void Initialize()
     {
-        base.Initialize(); // Встановлює розмір (size)
+        base.Initialize();
         startPosition = transform.position;
-
-        // Повертаємо кулю в бік польоту
         RotateTowardsMovement();
     }
 
@@ -49,10 +62,15 @@ public class Bullet : Element
 
     protected virtual void OnTriggerEnter2D(Collider2D collision)
     {
-        // Перевірка, щоб не влучити в самого себе або інші снаряди
-        if (collision.CompareTag("Enemy"))
+        // Б'ємо тільки тих, хто має targetTag
+        if (collision.CompareTag(targetTag))
         {
             ApplyDirectDamage(collision.gameObject);
+            Destroy(gameObject);
+        }
+
+        if (collision.CompareTag("Wall"))
+        {
             Destroy(gameObject);
         }
     }
