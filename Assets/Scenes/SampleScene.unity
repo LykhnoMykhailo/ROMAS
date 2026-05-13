@@ -2322,6 +2322,62 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
+--- !u!1 &486468093
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 486468095}
+  - component: {fileID: 486468094}
+  m_Layer: 0
+  m_Name: DungeonRenderer
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &486468094
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 486468093}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d7c86d90cfac7fb4ab54870b194ddfad, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DungeonRenderer
+  startRoomPrefab: {fileID: 4457751044104522890, guid: b7569ceb4a70edb449c6017414c2a1b6, type: 3}
+  randomRoomPrefabs:
+  - {fileID: 3880305204206101949, guid: a5de7a91aa11e4f45bd7d9e85cd96209, type: 3}
+  - {fileID: 3880305204206101949, guid: f6ee2fd1f4c687043ae0c08d8a55ce79, type: 3}
+  - {fileID: 3880305204206101949, guid: 25badb3968f7cdd4a94318bcab5172b8, type: 3}
+  - {fileID: 4457751044104522890, guid: a9c9150c62f6bb84bb1022d93df63b9a, type: 3}
+  - {fileID: 3880305204206101949, guid: a5de7a91aa11e4f45bd7d9e85cd96209, type: 3}
+  wallHorizontal: {fileID: 402569159007767074, guid: 770a1452b590b1647a269291123ea6b2, type: 3}
+  wallVertical: {fileID: 402569159007767074, guid: bd5035c269b44854e8dbb5197b996d29, type: 3}
+  gridStep: 16
+  wallOffsetX: 0
+  wallOffsetY: 0
+--- !u!4 &486468095
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 486468093}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 85.03558, y: 41.24853, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 615520967}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -2691,7 +2747,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 1053818631}
+  - {fileID: 486468095}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &619394800
@@ -5693,37 +5749,6 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
---- !u!1 &1053818630
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1053818631}
-  m_Layer: 0
-  m_Name: SpawnPoint
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1053818631
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1053818630}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 615520967}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1054181100
 GameObject:
   m_ObjectHideFlags: 0
@@ -8891,7 +8916,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 10
   m_MaskInteraction: 0
   m_Sprite: {fileID: 21300000, guid: 30f8224c250e6e64d9acf6c8b6b8f610, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -8971,6 +8996,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerCombat
   bulletPrefab: {fileID: 6364455100034951418, guid: 26233112004034d48b1cdc359bdc0ff8, type: 3}
   firePoint: {fileID: 971538356}
+  attackSpeed: 2
 --- !u!114 &1699215794
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9010,7 +9036,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 1
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!1 &1713135250
 GameObject:
   m_ObjectHideFlags: 0
@@ -11369,8 +11395,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BattleManager
   arenaContainer: {fileID: 615520966}
-  playerSpawnPoint: {fileID: 1053818631}
-  dummyPrefab: {fileID: 2296142037367522668, guid: a5dc8aa6386881c4daa418a726c13667, type: 3}
+  dungeonRenderer: {fileID: 486468094}
 --- !u!4 &2077810013
 Transform:
   m_ObjectHideFlags: 0

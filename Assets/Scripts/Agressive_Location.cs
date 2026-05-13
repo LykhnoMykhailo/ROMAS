@@ -1,52 +1,44 @@
 ﻿using System;
 using System.Collections.Generic;
-using UnityEngine; // Для Debug.Log
-
-// namespace map_test // Видаляємо для Unity
+using UnityEngine;
 
 [System.Serializable]
 public class Agressive_Location : Task_Location
 {
-    // Дані про фракцію/власника локації
-    public string Clan { get; set; }
+    // --- Дані про локацію на ГК ---
+    public string Clan { get; set; }        // Клан-власник локації (фракція ворогів)
+    public int CountOfRoom { get; set; }   // Бажана кількість кімнат
+    public bool Boss { get; set; }         // Чи генерувати кімнату з босом
 
-    // Кількість кімнат, які мають бути згенеровані на полотні
-    public int CountOfRoom { get; set; }
+    // --- Логічна мапа (Структура данжу) ---
+    public List<RoomData> GeneratedRooms { get; set; }
 
-    // Чи є в кінці бос
-    public bool Boss { get; set; }
-
-    // Списки об'єктів, що існують на "полотні" локації
-    // Використовуємо List<string> для прототипу, пізніше можна змінити на класи об'єктів
-    public List<string> Rooms { get; set; }   // Координати та розміри кімнат
-    public List<string> Walls { get; set; }   // Сегменти стін
-    public List<string> Enemys { get; set; }  // Список ворогів
-    public List<string> Objects { get; set; } // Декор, скрині, пастки
+    // --- Реєстр суб'єктів (Puppet entities) ---
+    // Сюди записуємо і ворогів, і потенційних союзників
+    public List<EntitySnapshot> Subjects { get; set; }
+    public List<EntitySnapshot> Objects { get; set; }  // Скрині, декор
 
     public Agressive_Location()
     {
         Type = "Agressive";
-        // Ініціалізуємо списки, щоб уникнути NullReferenceException при зверненні
-        Rooms = new List<string>();
-        Walls = new List<string>();
-        Enemys = new List<string>();
-        Objects = new List<string>();
+        GeneratedRooms = new List<RoomData>();
+        Subjects = new List<EntitySnapshot>();
+        Objects = new List<EntitySnapshot>();
     }
 
     /// <summary>
-    /// Реалізація взаємодії: завантаження бойової сцени в Unity
+    /// Перехід від глобальної мапи до бойової локації
     /// </summary>
     public override void OnInteract()
     {
         GameManager gm = GameManager.Instance;
-
-        // Змінюємо стан, щоб вимкнути керування мапою
         gm.ChangeState(GameState.Battle);
 
-        // Ховаємо рендерер мапи світу (вона залишається в пам'яті, але не вантажить відеокарту)
-        gm.mapRenderer.gameObject.SetActive(false);
+        if (gm.mapRenderer != null)
+            gm.mapRenderer.gameObject.SetActive(false);
 
-        // Викликаємо старт бою
+        // Передаємо дані в BattleManager, який через Renderer 
+        // створить фізичні об'єкти на основі цих списків
         BattleManager.Instance.StartBattle(this);
     }
 }
