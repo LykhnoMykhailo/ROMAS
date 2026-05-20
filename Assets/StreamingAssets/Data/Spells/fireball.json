@@ -1,0 +1,21 @@
+{
+  "$type": "GameCore.Entities.Spell, Assembly-CSharp",
+  "spellName": "Вогняна куля",
+  "type": 2,
+  "baseDamage": 25.0,
+  "manaCost": 15.0,
+  "cooldown": 3.0,
+  "damagePerInt": 1.5,
+  "damagePerSchoolLvl": 2.0,
+  "effect": "burn",
+  "effectSpeed": 0.0,
+  "duration": 0.0,
+  "radius": 12.0,
+  "effectRadius": 3.0,
+  "projectileCount": 1,
+  "texture_path": "image/weapons/iconst/fireball",
+  "projectile_speed": 10.0,
+  "craftData": {
+    "canCraft": false
+  }
+}

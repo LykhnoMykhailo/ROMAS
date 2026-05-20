@@ -3671,10 +3671,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.CanvasScaler
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 800, y: 600}
+  m_ReferenceResolution: {x: 1920, y: 1080}
   m_ScreenMatchMode: 0
   m_MatchWidthOrHeight: 0
   m_PhysicalUnit: 3
@@ -3868,10 +3868,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.CanvasScaler
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 800, y: 600}
+  m_ReferenceResolution: {x: 1920, y: 1080}
   m_ScreenMatchMode: 0
   m_MatchWidthOrHeight: 0
   m_PhysicalUnit: 3
@@ -4193,10 +4193,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.CanvasScaler
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 800, y: 600}
+  m_ReferenceResolution: {x: 1920, y: 1080}
   m_ScreenMatchMode: 0
   m_MatchWidthOrHeight: 0
   m_PhysicalUnit: 3
@@ -5342,10 +5342,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.CanvasScaler
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 800, y: 600}
+  m_ReferenceResolution: {x: 1920, y: 1080}
   m_ScreenMatchMode: 0
   m_MatchWidthOrHeight: 0
   m_PhysicalUnit: 3
@@ -6550,10 +6550,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.CanvasScaler
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 800, y: 600}
+  m_ReferenceResolution: {x: 1920, y: 1080}
   m_ScreenMatchMode: 0
   m_MatchWidthOrHeight: 0
   m_PhysicalUnit: 3
@@ -11166,10 +11166,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.CanvasScaler
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 800, y: 600}
+  m_ReferenceResolution: {x: 1920, y: 1080}
   m_ScreenMatchMode: 0
   m_MatchWidthOrHeight: 0
   m_PhysicalUnit: 3
@@ -11939,6 +11939,163 @@ MonoBehaviour:
         player_usable: 0
         shop: 0
     lvl: 1
+    book:
+      magic: []
+      abilities: []
+      use_spells:
+      - spellName: 
+        type: 0
+        baseDamage: 0
+        manaCost: 0
+        cooldown: 0
+        damagePerInt: 0
+        damagePerSchoolLvl: 0
+        effect: 
+        effectSpeed: 0
+        duration: 0
+        radius: 0
+        effectRadius: 0
+        projectileCount: 0
+        texture_path: 
+        projectile_speed: 0
+        craftData:
+          canCraft: 0
+      - spellName: 
+        type: 0
+        baseDamage: 0
+        manaCost: 0
+        cooldown: 0
+        damagePerInt: 0
+        damagePerSchoolLvl: 0
+        effect: 
+        effectSpeed: 0
+        duration: 0
+        radius: 0
+        effectRadius: 0
+        projectileCount: 0
+        texture_path: 
+        projectile_speed: 0
+        craftData:
+          canCraft: 0
+      - spellName: 
+        type: 0
+        baseDamage: 0
+        manaCost: 0
+        cooldown: 0
+        damagePerInt: 0
+        damagePerSchoolLvl: 0
+        effect: 
+        effectSpeed: 0
+        duration: 0
+        radius: 0
+        effectRadius: 0
+        projectileCount: 0
+        texture_path: 
+        projectile_speed: 0
+        craftData:
+          canCraft: 0
+      - spellName: 
+        type: 0
+        baseDamage: 0
+        manaCost: 0
+        cooldown: 0
+        damagePerInt: 0
+        damagePerSchoolLvl: 0
+        effect: 
+        effectSpeed: 0
+        duration: 0
+        radius: 0
+        effectRadius: 0
+        projectileCount: 0
+        texture_path: 
+        projectile_speed: 0
+        craftData:
+          canCraft: 0
+      - spellName: 
+        type: 0
+        baseDamage: 0
+        manaCost: 0
+        cooldown: 0
+        damagePerInt: 0
+        damagePerSchoolLvl: 0
+        effect: 
+        effectSpeed: 0
+        duration: 0
+        radius: 0
+        effectRadius: 0
+        projectileCount: 0
+        texture_path: 
+        projectile_speed: 0
+        craftData:
+          canCraft: 0
+      - spellName: 
+        type: 0
+        baseDamage: 0
+        manaCost: 0
+        cooldown: 0
+        damagePerInt: 0
+        damagePerSchoolLvl: 0
+        effect: 
+        effectSpeed: 0
+        duration: 0
+        radius: 0
+        effectRadius: 0
+        projectileCount: 0
+        texture_path: 
+        projectile_speed: 0
+        craftData:
+          canCraft: 0
+      - spellName: 
+        type: 0
+        baseDamage: 0
+        manaCost: 0
+        cooldown: 0
+        damagePerInt: 0
+        damagePerSchoolLvl: 0
+        effect: 
+        effectSpeed: 0
+        duration: 0
+        radius: 0
+        effectRadius: 0
+        projectileCount: 0
+        texture_path: 
+        projectile_speed: 0
+        craftData:
+          canCraft: 0
+      - spellName: 
+        type: 0
+        baseDamage: 0
+        manaCost: 0
+        cooldown: 0
+        damagePerInt: 0
+        damagePerSchoolLvl: 0
+        effect: 
+        effectSpeed: 0
+        duration: 0
+        radius: 0
+        effectRadius: 0
+        projectileCount: 0
+        texture_path: 
+        projectile_speed: 0
+        craftData:
+          canCraft: 0
+      - spellName: 
+        type: 0
+        baseDamage: 0
+        manaCost: 0
+        cooldown: 0
+        damagePerInt: 0
+        damagePerSchoolLvl: 0
+        effect: 
+        effectSpeed: 0
+        duration: 0
+        radius: 0
+        effectRadius: 0
+        projectileCount: 0
+        texture_path: 
+        projectile_speed: 0
+        craftData:
+          canCraft: 0
     st_lvl: 0
     ag_lvl: 0
     kn_lvl: 0
@@ -11949,7 +12106,6 @@ MonoBehaviour:
     mana_battle: 0
     exp: 0
     skills: []
-    book: []
     effects: []
     Weapon_use:
       id: 

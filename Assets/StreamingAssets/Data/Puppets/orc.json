@@ -22,16 +22,21 @@
   "Weapon_use": {
     "$type": "GameCore.Entities.Weapon, Assembly-CSharp",
     "Pname": "Ороча сокира",
-    "price": 0.0,
-    "description": "Важка іржава сокира, що завдає нищівних ударів.",
-    "base_damage": 4.0,
-    "scale_strength": 1.2,
-    "scale_agility": 0.0,
-    "scale_knowledge": 0.0,
-    "attack_type": "melee",
-    "projectile_type": "none",
-    "player_usable": false,
-    "shop": false
+      "price": 0.0,
+      "description": "Важка іржава сокира.",
+      "base_damage": 4.0,
+      "scale_agility": 0.0,
+      "scale_strength": 1.2,
+      "scale_knowledge": 0.0,
+      "attack_type": "melee",
+      "projectile_type": "axe_cut",
+      "attack_range": 1.5,
+      "attack_speed": 2.0,
+      "projectile_speed": 1.0,
+      "status_effect": "none",
+      "effect_chance": 0.0,
+      "player_usable": false,
+      "shop": false
   },
   "inventory": {
     "slots": [
@@ -39,12 +44,21 @@
         "item": {
           "$type": "GameCore.Entities.Weapon, Assembly-CSharp",
           "Pname": "Ороча сокира",
-          "base_damage": 4.0,
-          "scale_strength": 1.2,
-          "scale_agility": 0.0,
-          "scale_knowledge": 0.0,
-          "attack_type": "melee",
-          "projectile_type": "none"
+      "price": 0.0,
+      "description": "Важка іржава сокира.",
+      "base_damage": 4.0,
+      "scale_agility": 0.0,
+      "scale_strength": 1.2,
+      "scale_knowledge": 0.0,
+      "attack_type": "melee",
+      "projectile_type": "axe_cut",
+      "attack_range": 1.5,
+      "attack_speed": 2.0,
+      "projectile_speed": 1.0,
+      "status_effect": "none",
+      "effect_chance": 0.0,
+      "player_usable": false,
+      "shop": false
         },
         "count": 1
       }
@@ -52,7 +66,11 @@
     "equippedWeapon": null
   },
   "skills": [],
-  "book": [],
+"book": {
+    "magic": [],
+    "abylities": [],
+    "use_spells": []
+},
   "effects": [],
   "textures": [
     "Sprites/Enemies/Orc_Idle",

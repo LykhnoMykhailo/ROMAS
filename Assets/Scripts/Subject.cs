@@ -14,6 +14,7 @@ public class Subject : MonoBehaviour
     public virtual void Initialize(Puppet data)
     {
         stats = data;
+        stats.calculate_base_stats();
         clan = data.Pname; // Або інша логіка згідно з вашим задумом
         weapon_name = data.equippedWeaponName;
     }

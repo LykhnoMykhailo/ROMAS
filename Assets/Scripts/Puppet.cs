@@ -7,8 +7,7 @@ using Newtonsoft.Json;
 namespace GameCore.Entities
 {
     /// <summary>
-    /// Базовий клас Puppet, реалізований суворо за діаграмою image_7665d5.png.
-    /// Містить усі характеристики, системи прогресії та методи завантаження даних.
+    /// Базовий клас Puppet, реалізований за діаграмою з урахуванням системи магії (Book).
     /// </summary>
     [Serializable]
     public class Puppet
@@ -19,9 +18,11 @@ namespace GameCore.Entities
         public float kn; // Knowledge
         public float mp; // Magical Power
         public string equippedWeaponName;
+
         [Header("Системи")]
         public Inventory inventory;
         public int lvl;
+        public Book book;   // Оновлено: Магічна книга (клас Book замість List<string>)
 
         [Header("Приріст характеристик за рівень")]
         public float st_lvl;
@@ -40,11 +41,10 @@ namespace GameCore.Entities
         [Header("Прогрес")]
         public float exp;
         public List<string> skills; // Список ID навичок
-        public List<string> book;   // Магічна книга / Рецепти
 
         [Header("Стан та Ефекти")]
         [JsonProperty("effects")]
-        public List<Effect> effects; // ЗАМІНЕНО: Використовуємо клас Effect замість BaseEffect
+        public List<Effect> effects;
         public Weapon Weapon_use; // Поточна зброя
 
         [Header("Бойові параметри")]
@@ -64,12 +64,12 @@ namespace GameCore.Entities
         [Header("Захист та Візуал")]
         public float armor;
         public List<string> textures; // Шляхи до спрайтів
-        public string cords; // Поле з діаграми
+        public string cords;
 
         public string Pname;
         [Header("Налаштування прогресії")]
-        public float exp_to_next_level = 100f; // Скільки треба для 2 рівня
-        public float exp_multiplier = 1.2f;    // Коефіцієнт подорожчання рівня
+        public float exp_to_next_level = 100f;
+        public float exp_multiplier = 1.2f;
 
         /// <summary>
         /// Підвищує рівень істоти, додає характеристики та знімає досвід.
@@ -78,28 +78,21 @@ namespace GameCore.Entities
         {
             if (this.exp >= this.exp_to_next_level)
             {
-                // 1. Списуємо досвід
                 this.exp -= this.exp_to_next_level;
-
-                // 2. Збільшуємо рівень
                 this.lvl++;
 
-                // 3. Додаємо характеристики (приріст з діаграми)
                 this.st += this.st_lvl;
                 this.ag += this.ag_lvl;
                 this.kn += this.kn_lvl;
                 this.mp += this.mp_lvl;
 
-                // 4. Перераховуємо базове HP/Mana (з урахуванням нових статів)
-                // Наприклад, з коефіцієнтами 10 та 5
+                // Розрахунок з коефіцієнтами
                 calculate_base_stats(10f, 5f);
 
-                // 5. Збільшуємо вартість наступного рівня
                 this.exp_to_next_level = Mathf.Round(this.exp_to_next_level * this.exp_multiplier);
 
                 Debug.Log($"[Puppet] {Pname} підняв рівень до {lvl}! Наступний рівень коштує {exp_to_next_level}");
 
-                // Рекурсія: якщо досвіду настільки багато, що вистачає на ще один рівень
                 if (this.exp >= this.exp_to_next_level)
                 {
                     level_up();
@@ -112,9 +105,6 @@ namespace GameCore.Entities
             }
         }
 
-        /// <summary>
-        /// Додає досвід і автоматично перевіряє можливість підвищення рівня.
-        /// </summary>
         public void add_exp(float amount)
         {
             this.exp += amount;
@@ -128,7 +118,7 @@ namespace GameCore.Entities
         {
             this.inventory = new Inventory();
             this.skills = new List<string>();
-            this.book = new List<string>();
+            this.book = new Book(); // ВИПРАВЛЕНО: Додано дужки () для коректного створення екземпляра
             this.effects = new List<Effect>();
             this.textures = new List<string>();
 
@@ -136,9 +126,6 @@ namespace GameCore.Entities
             this.position_battle = Vector2.zero;
         }
 
-        /// <summary>
-        /// СТАТИЧНА ФУНКЦІЯ: Завантажує дані Puppet з JSON-файлу.
-        /// </summary>
         public static Puppet LoadFromTemplate(string fileName)
         {
             string path = Path.Combine(Application.streamingAssetsPath, "Data/Puppets", fileName + ".json");
@@ -152,13 +139,20 @@ namespace GameCore.Entities
             try
             {
                 string json = File.ReadAllText(path);
-                Puppet template = JsonConvert.DeserializeObject<Puppet>(json);
-                Debug.Log($"[Puppet System] Дані істоти '{fileName}' успішно завантажені.");
+
+                // КРИТИЧНО ДЛЯ КНИГИ: додаємо налаштування десеріалізації типів
+                var settings = new JsonSerializerSettings
+                {
+                    TypeNameHandling = TypeNameHandling.Auto
+                };
+
+                Puppet template = JsonConvert.DeserializeObject<Puppet>(json, settings);
+                Debug.Log($"[Puppet System] Дані істоти '{fileName}' разом із магічною книгою успішно завантажені.");
                 return template;
             }
             catch (Exception ex)
             {
-                Debug.LogError($"[Puppet System] Помилка завантаження даних: {ex.Message}");
+                Debug.LogError($"[Puppet System] Помилка завантаження даних Puppet: {ex.Message}");
                 return null;
             }
         }
@@ -183,20 +177,24 @@ namespace GameCore.Entities
             this.armor = template.armor;
             this.speed = template.speed;
             this.size = template.size;
+
             this.textures = new List<string>(template.textures);
             this.skills = new List<string>(template.skills);
             this.Pname = template.Pname;
 
-            // Ініціалізуємо бойові показники
+            // ДОДАНО: Передаємо магічну книгу з шаблону JSON (якщо вона там прописана)
+            if (template.book != null)
+            {
+                this.book = template.book;
+            }
+
             this.hp_battle = this.hp;
             this.mana_battle = this.mana;
         }
 
-        /// <summary>
-        /// Розрахунок характеристик згідно з формулами на діаграмі.
-        /// </summary>
-        public virtual void calculate_base_stats(float hp_multy, float mana_multy)
+        public virtual void calculate_base_stats(float hp_multy = 1, float mana_multy = 1)
         {
+            // Формула розрахунку HP від Сили (st) та Мани від Знань (kn)
             this.hp = 10 * (this.st * hp_multy);
             this.mana = 10 * (this.kn * mana_multy);
 

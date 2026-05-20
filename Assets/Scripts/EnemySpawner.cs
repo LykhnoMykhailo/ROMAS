@@ -27,12 +27,12 @@ public class EnemySpawner : MonoBehaviour
             }
 
             // 4. Додаткове налаштування візуалу
-            if (data.textures.Count > 0)
-            {
-                var sr = enemyObj.GetComponent<SpriteRenderer>();
-                if (sr != null)
-                    sr.sprite = Resources.Load<Sprite>(data.textures[0]);
-            }
+            //if (data.textures.Count > 0)
+            //{
+            //    var sr = enemyObj.GetComponent<SpriteRenderer>();
+            //    if (sr != null)
+            //        sr.sprite = Resources.Load<Sprite>(data.textures[0]);
+            //}
         }
     }
 }
