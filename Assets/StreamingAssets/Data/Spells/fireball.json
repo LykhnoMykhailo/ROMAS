@@ -13,8 +13,9 @@
   "radius": 12.0,
   "effectRadius": 3.0,
   "projectileCount": 1,
-  "texture_path": "image/weapons/iconst/fireball",
+  "texture_path": "image/weapons/iconst/fire_stream", 
   "projectile_speed": 10.0,
+  "spellSize": 0.5,
   "craftData": {
     "canCraft": false
   }

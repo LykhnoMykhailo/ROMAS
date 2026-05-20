@@ -19,7 +19,7 @@ public class Subject : MonoBehaviour
         weapon_name = data.equippedWeaponName;
     }
 
-    public virtual void TakeDamage(float amount)
+    public virtual void TakeDmg(float amount)
     {
         if (stats == null) return;
 

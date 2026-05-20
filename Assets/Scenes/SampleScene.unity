@@ -9042,6 +9042,8 @@ MonoBehaviour:
   bulletPrefab: {fileID: 6364455100034951418, guid: 26233112004034d48b1cdc359bdc0ff8, type: 3}
   firePoint: {fileID: 971538356}
   attackSpeed: 2
+  baseProjectilePrefab: {fileID: 6364455100034951418, guid: 3866593215230af42bc876aea70069fe, type: 3}
+  baseBombPrefab: {fileID: 6364455100034951418, guid: 7d07dbe90c0c98f48ab409986a8c7570, type: 3}
 --- !u!114 &1699215794
 MonoBehaviour:
   m_ObjectHideFlags: 0

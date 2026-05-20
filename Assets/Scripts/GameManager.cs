@@ -261,7 +261,24 @@ public class GameManager : MonoBehaviour
                 visualPlayer.transform.localScale = new Vector3(direction.x > 0 ? 1 : -1, 1, 1);
         }
     }
+    public void HandlePlayerDeath()
+    {
+        if (currentPlayer == null) return;
 
+        Debug.Log("[GameManager] Гравець загинув. Повернення до мапи...");
+
+        // 1. Відроджуємо гравця (відновлюємо HP)
+        currentPlayer.Respawn();
+
+        // 2. Переводимо стан гри назад на WorldMap
+        ChangeState(GameState.WorldMap);
+
+        // 3. (Опціонально) Виводимо повідомлення в HUD
+        if (hudManager != null)
+        {
+            // hudManager.ShowNotification("Ви загинули, але магія повернула вас до життя!");
+        }
+    }
     public void RefreshMapDisplay()
     {
         if (mapManager.CurrentMap != null && mapRenderer != null && currentPlayer != null)

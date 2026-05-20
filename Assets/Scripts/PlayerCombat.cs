@@ -4,6 +4,7 @@ using UnityEngine.InputSystem;
 
 public class PlayerCombat : MonoBehaviour
 {
+    [Header("Weapon Settings")]
     public GameObject bulletPrefab;
     public Transform firePoint;
 
@@ -11,9 +12,14 @@ public class PlayerCombat : MonoBehaviour
     public float attackSpeed;
     private float nextAttackTime = 0f;
 
+    [Header("Magic Settings")]
+    public GameObject baseProjectilePrefab;
+    public GameObject baseBombPrefab;
+    private float[] lastCastTimes = new float[9];
+
     void Update()
     {
-        // Ïåğåâ³ğêà ñòğ³ëüáè
+        // 1. Ñòğ³ëüáà ç³ çáğî¿ (ÒÂ²É ÎĞÈÃ²ÍÀËÜÍÈÉ ÊÎÄ)
         if (Mouse.current.leftButton.isPressed && GameManager.Instance.currentState == GameState.Battle)
         {
             if (Time.time >= nextAttackTime)
@@ -22,8 +28,15 @@ public class PlayerCombat : MonoBehaviour
                 nextAttackTime = Time.time + 1f / attackSpeed;
             }
         }
+
+        // 2. Ìàã³ÿ
+        if (GameManager.Instance.currentState == GameState.Battle)
+        {
+            HandleMagicInput();
+        }
     }
 
+    // ÒÂ²É ÎĞÈÃ²ÍÀËÜÍÈÉ ÌÅÒÎÄ SHOOT (ÁÅÇ ÇÌ²Í)
     void Shoot()
     {
         if (bulletPrefab == null || firePoint == null) return;
@@ -33,44 +46,91 @@ public class PlayerCombat : MonoBehaviour
 
         Weapon currentWeapon = player.inventory.equippedWeapon;
         attackSpeed = currentWeapon.attack_speed;
-        // 1. Ñòâîğşºìî îá'ºêò êóë³
+
         GameObject bulletObj = Instantiate(bulletPrefab, firePoint.position, Quaternion.identity);
         var bulletScript = bulletObj.GetComponent<Bullet>();
 
-        // 2. Íàëàøòîâóºìî â³çóàë (ñïğàéò)
         string spritePath = "image/weapons/iconst/" + currentWeapon.projectile_type;
         Sprite loadedSprite = Resources.Load<Sprite>(spritePath);
 
-        // ÄÎÄÀÉ ÖÅÉ ĞßÄÎÊ ÄËß ÏÅĞÅÂ²ĞÊÈ:
         if (loadedSprite == null)
-        {
-            Debug.LogError($"!!! ÊĞÈÒÈ×ÍÎ: Ôàéë íå çíàéäåíî çà øëÿõîì: Resources/{spritePath}");
-        }
+            Debug.LogError($"!!! ÊĞÈÒÈ×ÍÎ: Ôàéë íå çíàéäåíî: Resources/{spritePath}");
+
         var sr = bulletObj.GetComponent<SpriteRenderer>();
-        if (sr != null && loadedSprite != null)
-        {
-            sr.sprite = loadedSprite;
-        }
+        if (sr != null && loadedSprite != null) sr.sprite = loadedSprite;
 
         if (bulletScript != null)
         {
-            // 3. ÏÅĞÅÄÀªÌÎ ÂËÀÑÍÈÊÀ (öå äîçâîëèòü êóë³ âèáğàòè ö³ëü ÷åğåç SetOwner)
             bulletScript.SetOwner(this.gameObject);
-
-            // 4. ĞÀÕÓªÌÎ ÍÀÏĞßÌÎÊ (äî ìèø³)
             Vector3 mousePos = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
-            mousePos.z = 0; // Äëÿ 2D çàíóëÿºìî Z
+            mousePos.z = 0;
             Vector2 direction = ((Vector2)mousePos - (Vector2)firePoint.position).normalized;
 
-            // 5. ÇÀÏÎÂÍŞªÌÎ ÄÀÍ²
             bulletScript.vector = direction;
             bulletScript.damage = currentWeapon.GetTotalDamage(player);
             bulletScript.speed = currentWeapon.projectile_speed;
             bulletScript.maxRange = currentWeapon.attack_range;
             bulletScript.size = 0.4f;
 
-            // 6. ÇÀÏÓÑÊÀªÌÎ
             bulletScript.Initialize();
         }
+    }
+
+    // ËÎÃ²ÊÀ ÌÀÃ²¯
+    private void HandleMagicInput()
+    {
+        var keyboard = Keyboard.current;
+        if (keyboard == null) return;
+
+        Key[] magicKeys = { Key.Digit1, Key.Digit2, Key.Digit3, Key.Digit4, Key.Digit5, Key.Digit6, Key.Digit7, Key.Digit8, Key.Digit9 };
+
+        for (int i = 0; i < magicKeys.Length; i++)
+        {
+            if (keyboard[magicKeys[i]].wasPressedThisFrame)
+            {
+                AttemptCastSpell(i);
+                break;
+            }
+        }
+    }
+
+    private void AttemptCastSpell(int slotIndex)
+    {
+        var player = GameManager.Instance.currentPlayer;
+        if (player == null || player.book == null || player.book.use_spells == null || slotIndex >= player.book.use_spells.Length) return;
+
+        Spell spell = player.book.use_spells[slotIndex];
+        if (spell == null || player.mana_battle < spell.manaCost) return;
+
+        // ÏÅĞÅÂ²ĞÊÀ ÊÓËÄÀÓÍÓ
+        if (Time.time < lastCastTimes[slotIndex] + spell.cooldown) return;
+
+        lastCastTimes[slotIndex] = Time.time;
+        player.mana_battle -= spell.manaCost;
+
+        Vector3 mousePos = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
+        mousePos.z = 0;
+        Vector2 direction = ((Vector2)mousePos - (Vector2)firePoint.position).normalized;
+
+        GameObject prefab = (spell.type == SpellType.Projectile) ? baseProjectilePrefab : baseBombPrefab;
+        if (prefab == null) return;
+
+        GameObject go = Instantiate(prefab, firePoint.position, Quaternion.identity);
+
+        if (go.TryGetComponent(out Bomb bomb))
+        {
+            bomb.SetOwner(this.gameObject);
+            bomb.InitMagic(player, spell, direction);
+            bomb.Initialize();
+        }
+        else if (go.TryGetComponent(out Bullet bullet))
+        {
+            bullet.SetOwner(this.gameObject);
+            bullet.InitMagic(player, spell, direction);
+            bullet.Initialize();
+        }
+
+        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+        go.transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
     }
 }

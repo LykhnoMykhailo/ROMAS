@@ -23,7 +23,7 @@ namespace GameCore.Entities // Використовую твій простір імен
         public float baseDamage;
         public float manaCost;
         public float cooldown;
-
+        public float spellSize;
         [Header("Скейли (Масштабування)")]
         public float damagePerInt;
         public float damagePerSchoolLvl;

@@ -47,4 +47,5 @@ public class Enemy : Subject
             if (s != null) sr.sprite = s;
         }
     }
+
 }

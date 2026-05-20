@@ -1,3 +1,4 @@
+using System.Linq;
 using GameCore.Entities;
 using UnityEngine;
 
@@ -5,26 +6,14 @@ public class Bullet : Element
 {
     [Header("Bullet Settings")]
     public float damage;
-    public float maxRange;
+    public float maxRange; // Дальність польоту
     protected Vector3 startPosition;
-
-    // ЗМІНЕНО З private НА protected:
-    protected float speed;
-    protected Vector2 direction;
-    protected string effectToApply;
-    protected string targetTag; // Кого ми б'ємо
+    protected string targetTag; // Ціль: "Enemy" або "Player"
 
     public void SetOwner(GameObject sender)
     {
-        Debug.Log($"SetOwner Log Sender = {sender.CompareTag("Player")}");
-        if (sender.CompareTag("Player"))
-        {
-            targetTag = "Enemy";
-        }
-        else if (sender.CompareTag("Enemy"))
-        {
-            targetTag = "Player";
-        }
+        if (sender.CompareTag("Player")) targetTag = "Enemy";
+        else if (sender.CompareTag("Enemy")) targetTag = "Player";
     }
 
     public override void Initialize()
@@ -45,7 +34,7 @@ public class Bullet : Element
 
     protected override void Update()
     {
-        base.Update(); // Рух по вектору (vector * speed) з Element
+        base.Update(); // Рух (vector * speed)
         CheckRange();
     }
 
@@ -64,47 +53,84 @@ public class Bullet : Element
 
     protected virtual void OnTriggerEnter2D(Collider2D collision)
     {
-        Debug.Log($"Trigger use on {targetTag}");
-        if (collision.CompareTag(targetTag))
+        // Перевірка влучання
+        if (!string.IsNullOrEmpty(targetTag) && collision.CompareTag(targetTag))
         {
             ApplyDirectDamage(collision.gameObject);
             Destroy(gameObject);
         }
-
-        if (collision.CompareTag("Wall"))
+        // Перевірка стін (безпечна)
+        else if (collision.CompareTag("Wall") || (HasTag("Obstacle") && collision.CompareTag("Obstacle")))
         {
             Destroy(gameObject);
         }
     }
 
-    protected void ApplyDirectDamage(GameObject target)
+    private bool HasTag(string tag)
     {
-        Debug.Log($"[Bullet] Влучання в {target.name}! Шкода: {damage}");
+        try { return UnityEditorInternal.InternalEditorUtility.tags.Contains(tag); }
+        catch { return false; }
     }
 
-    /// <summary>
-    /// НОВЕ ПЕРЕВАНТАЖЕННЯ: Ініціалізація кулі як магічного снаряда
-    /// Додано ключове слово virtual, щоб Bomb міг його перевизначити
-    /// </summary>
+    protected virtual void ApplyDirectDamage(GameObject target)
+    {
+        // 1. Перевіряємо чи це Ворог (Subject)
+        // Ворог має компонент Enemy, який успадковує Subject
+        var enemy = target.GetComponent<Subject>();
+        if (enemy != null)
+        {
+            enemy.TakeDmg(damage);
+            Debug.Log($"[Bullet] Нанесено {damage} шкоди ворогу.");
+            return;
+        }
+
+        // 2. Перевіряємо чи це Гравець
+        // Оскільки Player не MonoBehaviour, ми беремо його з GameManager, 
+        // якщо об'єкт має тег "Player"
+        if (target.CompareTag("Player"))
+        {
+            var player = GameManager.Instance.currentPlayer;
+            if (player != null)
+            {
+                player.TakeDmg(damage);
+                Debug.Log($"[Bullet] Нанесено {damage} шкоди гравцю.");
+            }
+            return;
+        }
+    }
+
+    // ПОВНА ІНІЦІАЛІЗАЦІЯ КУЛІ
     public virtual void InitMagic(Puppet caster, Spell spell, Vector2 dir)
     {
+        // 1. Параметри
         this.damage = spell.baseDamage + (caster.kn * spell.damagePerInt);
         this.speed = spell.projectile_speed;
+        this.vector = dir.normalized;
 
-        // ВАЖЛИВО: Задаємо vector для Element, щоб воно рухалось
-        this.direction = dir.normalized;
-        this.vector = this.direction;
+        // 2. Дальність (Беремо з радіусу, якщо він є, інакше 15)
+        this.maxRange = (spell.radius > 0) ? spell.radius : 15f;
 
-        this.maxRange = spell.radius; // Прив'язуємо дистанцію польоту до радіусу з JSON
-        this.effectToApply = spell.effect;
+        // 3. Розмір (Scale)
+        float size = (spell.spellSize > 0) ? spell.spellSize : 0.5f;
+        this.transform.localScale = new Vector3(size, size, 1f);
 
+        // 4. Текстура
         SpriteRenderer sr = GetComponent<SpriteRenderer>();
         if (sr != null && !string.IsNullOrEmpty(spell.texture_path))
         {
-            Sprite spellSprite = Resources.Load<Sprite>(spell.texture_path);
-            if (spellSprite != null) sr.sprite = spellSprite;
+            string path = 
+                spell.texture_path;
+            Sprite loadedSprite = Resources.Load<Sprite>(path);
+            if (loadedSprite != null)
+            {
+                sr.sprite = loadedSprite;
+            }
+            else
+            {
+                Debug.LogError($"[Bullet Init] Спрайт не знайдено: Resources/{path}");
+            }
         }
 
-        Destroy(gameObject, spell.radius / Mathf.Max(this.speed, 1f));
+        Debug.Log($"[Bullet Init] Куля ініціалізована: Дальність={maxRange}, Розмір={size}");
     }
 }

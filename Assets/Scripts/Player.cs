@@ -36,7 +36,14 @@ namespace GameCore.Entities
             this.playerClass = "Adventurer";
             this.position = Vector2.zero;
         }
-
+        public void TakeDmg(float dmg)
+        {
+            this.take_dmg(dmg);
+            if (this.is_alive())
+            {
+                GameManager.Instance.HandlePlayerDeath();
+            }
+        }
         public void InitializeNewPlayer(string playerName, string startMapName)
         {
             this.Pname = playerName;
@@ -58,10 +65,39 @@ namespace GameCore.Entities
                 inventory.AddItem(starter);
                 inventory.Use_weapon(starter);
                 this.equippedWeaponName = starter.Pname;
-
             }
 
+            // --- ПРАВИЛЬНИЙ БЛОК: ЗАВАНТАЖЕННЯ МАГІЇ З JSON ---
+
+            // 1. Створюємо книгу магії, якщо вона null
+            if (this.book == null)
+            {
+                this.book = new Book();
+            }
+
+            // 2. Завантажуємо заклинання "fireball" через вбудований метод конфігу
+            // Функція автоматично шукає файл у StreamingAssets/Data/Spells/fireball.json
+            Spell fireball = Spell.LoadFromConfig("fireball");
+
+            if (fireball != null)
+            {
+                // Додаємо заклинання до списку вивчених (у загальний список книги)
+                this.book.AddSpell(fireball);
+
+                // Екіпіруємо у слот 1 (індекс 0) за допомогою твого методу з Book.cs
+                this.book.EquipSpell(fireball, 0);
+            }
+            else
+            {
+                Debug.LogError("[Player Init] КРИТИЧНО: Не вдалося завантажити стартове заклинання! Перевірте файл StreamingAssets/Data/Spells/fireball.json");
+            }
+
+            // --------------------------------------------------
+
             calculate_base_stats(10f, 5f);
+
+            // Даємо ману на старті
+            this.mana_battle = this.mana;
         }
 
         #region Система Збереження та Завантаження
@@ -126,7 +162,18 @@ namespace GameCore.Entities
         }
 
         #endregion
+        // Метод для повного відновлення стану гравця після смерті
+        public void Respawn()
+        {
+            // Відновлюємо HP до максимального (припускаю, що у тебе є змінна max_hp)
+            this.hp_battle = this.hp;
+            this.mana_battle = this.mana;
 
+            // Скидаємо позицію на стартову, якщо треба (або залишаємо поточну)
+            // this.position = new Vector2(1, 1); 
+
+            Debug.Log("[Player] Гравець відродився.");
+        }
         public void AddMoney(float amount) { this.money += amount; }
         public bool CanAfford(float cost) { return this.money >= cost; }
     }
