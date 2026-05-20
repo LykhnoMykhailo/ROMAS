@@ -160,6 +160,19 @@ namespace GameCore.Entities
         /// <summary>
         /// Застосовує завантажені дані до поточного об'єкта.
         /// </summary>
+        public void UpdateToLvl(int lvl_user)
+        {
+            for (int i = 0; i < lvl_user; i++)
+            {
+                this.st = this.st + this.st_lvl;
+                this.ag=this.ag + this.ag_lvl;
+                this.kn=this.kn + this.kn_lvl;
+                this.mp=this.mp + this.mp_lvl;
+
+            }
+            this.lvl = lvl_user;
+            calculate_base_stats(1, 1);
+        }
         public void ApplyTemplate(Puppet template)
         {
             if (template == null) return;

@@ -6,7 +6,23 @@ public class Enemy : Subject
     // Посилання на інші компоненти бота
     public EnemyAI Ai { get; private set; }
     public EnemyMovement Movement { get; private set; }
+    // У класі Enemy.cs
+    protected override void Die()
+    {
+        Debug.Log($"<color=green>[Enemy]</color> {gameObject.name} помер, видаю золото.");
 
+        // Нараховуємо золото гравцю
+        if (GameManager.Instance != null && GameManager.Instance.currentPlayer != null)
+        {
+            GameManager.Instance.currentPlayer.AddMoney(3f);
+            Debug.Log($"[Drop] +3 золота. Поточний баланс: {GameManager.Instance.currentPlayer.money}");
+            GameManager.Instance.currentPlayer.add_exp(3f);
+            Debug.Log($"[Drop] + 3 exp");
+        }
+
+        // Викликаємо базову логіку знищення об'єкта
+        base.Die();
+    }
     public override void Initialize(Puppet data)
     {
         base.Initialize(data);

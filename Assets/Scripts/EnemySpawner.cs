@@ -12,6 +12,7 @@ public class EnemySpawner : MonoBehaviour
     {
         // 1. Завантажуємо стат-блок з JSON
         Puppet data = Puppet.LoadFromTemplate(enemyType);
+        data.UpdateToLvl(GameManager.Instance.currentPlayer.lvl);
 
         if (data != null)
         {
@@ -24,6 +25,7 @@ public class EnemySpawner : MonoBehaviour
             {
                 enemyScript.Initialize(data);
                 enemyObj.name = data.Pname;
+                
             }
 
             // 4. Додаткове налаштування візуалу

@@ -32,8 +32,8 @@ Transform:
   m_GameObject: {fileID: 6184593544977291217}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: -0.0553, y: 0.0582, z: 0}
+  m_LocalScale: {x: 0.9549, y: 0.9525, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -87,12 +87,12 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 4
   m_MaskInteraction: 0
-  m_Sprite: {fileID: 21300000, guid: ec249e4256cc7fc459f57d1ac0983522, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 6e467955d9fd41848a39f916a813be7e, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 0.16, y: 0.16}
+  m_Size: {x: 2.45, y: 2.45}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -131,17 +131,17 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0.003108561, y: 0.004700184}
+  m_Offset: {x: -0.054052204, y: -0.06608811}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1, y: 1}
-    newSize: {x: 0.16, y: 0.16}
+    oldSize: {x: 1.6333333, y: 1.6333333}
+    newSize: {x: 2.45, y: 2.45}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 1.0153905, y: 0.9996731}
+  m_Size: {x: 0.901069, y: 1.1951838}
   m_EdgeRadius: 0
 --- !u!50 &132133588832675040
 Rigidbody2D:
@@ -209,6 +209,172 @@ MonoBehaviour:
         player_usable: 0
         shop: 0
     lvl: 1
+    book:
+      magic: []
+      abilities: []
+      use_spells:
+      - spellName: 
+        type: 0
+        baseDamage: 0
+        manaCost: 0
+        cooldown: 0
+        spellSize: 0
+        damagePerInt: 0
+        damagePerSchoolLvl: 0
+        effect: 
+        effectSpeed: 0
+        duration: 0
+        radius: 0
+        effectRadius: 0
+        projectileCount: 0
+        texture_path: 
+        projectile_speed: 0
+        craftData:
+          canCraft: 0
+      - spellName: 
+        type: 0
+        baseDamage: 0
+        manaCost: 0
+        cooldown: 0
+        spellSize: 0
+        damagePerInt: 0
+        damagePerSchoolLvl: 0
+        effect: 
+        effectSpeed: 0
+        duration: 0
+        radius: 0
+        effectRadius: 0
+        projectileCount: 0
+        texture_path: 
+        projectile_speed: 0
+        craftData:
+          canCraft: 0
+      - spellName: 
+        type: 0
+        baseDamage: 0
+        manaCost: 0
+        cooldown: 0
+        spellSize: 0
+        damagePerInt: 0
+        damagePerSchoolLvl: 0
+        effect: 
+        effectSpeed: 0
+        duration: 0
+        radius: 0
+        effectRadius: 0
+        projectileCount: 0
+        texture_path: 
+        projectile_speed: 0
+        craftData:
+          canCraft: 0
+      - spellName: 
+        type: 0
+        baseDamage: 0
+        manaCost: 0
+        cooldown: 0
+        spellSize: 0
+        damagePerInt: 0
+        damagePerSchoolLvl: 0
+        effect: 
+        effectSpeed: 0
+        duration: 0
+        radius: 0
+        effectRadius: 0
+        projectileCount: 0
+        texture_path: 
+        projectile_speed: 0
+        craftData:
+          canCraft: 0
+      - spellName: 
+        type: 0
+        baseDamage: 0
+        manaCost: 0
+        cooldown: 0
+        spellSize: 0
+        damagePerInt: 0
+        damagePerSchoolLvl: 0
+        effect: 
+        effectSpeed: 0
+        duration: 0
+        radius: 0
+        effectRadius: 0
+        projectileCount: 0
+        texture_path: 
+        projectile_speed: 0
+        craftData:
+          canCraft: 0
+      - spellName: 
+        type: 0
+        baseDamage: 0
+        manaCost: 0
+        cooldown: 0
+        spellSize: 0
+        damagePerInt: 0
+        damagePerSchoolLvl: 0
+        effect: 
+        effectSpeed: 0
+        duration: 0
+        radius: 0
+        effectRadius: 0
+        projectileCount: 0
+        texture_path: 
+        projectile_speed: 0
+        craftData:
+          canCraft: 0
+      - spellName: 
+        type: 0
+        baseDamage: 0
+        manaCost: 0
+        cooldown: 0
+        spellSize: 0
+        damagePerInt: 0
+        damagePerSchoolLvl: 0
+        effect: 
+        effectSpeed: 0
+        duration: 0
+        radius: 0
+        effectRadius: 0
+        projectileCount: 0
+        texture_path: 
+        projectile_speed: 0
+        craftData:
+          canCraft: 0
+      - spellName: 
+        type: 0
+        baseDamage: 0
+        manaCost: 0
+        cooldown: 0
+        spellSize: 0
+        damagePerInt: 0
+        damagePerSchoolLvl: 0
+        effect: 
+        effectSpeed: 0
+        duration: 0
+        radius: 0
+        effectRadius: 0
+        projectileCount: 0
+        texture_path: 
+        projectile_speed: 0
+        craftData:
+          canCraft: 0
+      - spellName: 
+        type: 0
+        baseDamage: 0
+        manaCost: 0
+        cooldown: 0
+        spellSize: 0
+        damagePerInt: 0
+        damagePerSchoolLvl: 0
+        effect: 
+        effectSpeed: 0
+        duration: 0
+        radius: 0
+        effectRadius: 0
+        projectileCount: 0
+        texture_path: 
+        projectile_speed: 0
+        craftData:
+          canCraft: 0
     st_lvl: 0
     ag_lvl: 0
     kn_lvl: 0
@@ -219,7 +385,6 @@ MonoBehaviour:
     mana_battle: 0
     exp: 0
     skills: []
-    book: []
     effects: []
     Weapon_use:
       id: 
