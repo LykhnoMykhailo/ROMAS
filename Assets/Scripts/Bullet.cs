@@ -60,16 +60,10 @@ public class Bullet : Element
             Destroy(gameObject);
         }
         // Перевірка стін (безпечна)
-        else if (collision.CompareTag("Wall") || (HasTag("Obstacle") && collision.CompareTag("Obstacle")))
+        else if (collision.CompareTag("Wall") || collision.gameObject.tag == "Obstacle")
         {
             Destroy(gameObject);
         }
-    }
-
-    private bool HasTag(string tag)
-    {
-        try { return UnityEditorInternal.InternalEditorUtility.tags.Contains(tag); }
-        catch { return false; }
     }
 
     protected virtual void ApplyDirectDamage(GameObject target)
@@ -118,8 +112,7 @@ public class Bullet : Element
         SpriteRenderer sr = GetComponent<SpriteRenderer>();
         if (sr != null && !string.IsNullOrEmpty(spell.texture_path))
         {
-            string path = 
-                spell.texture_path;
+            string path = spell.texture_path;
             Sprite loadedSprite = Resources.Load<Sprite>(path);
             if (loadedSprite != null)
             {

@@ -34,13 +34,9 @@ public class Bomb : Bullet
 
     private bool IsObstacle(Collider2D collision)
     {
-        return collision.CompareTag("Wall") || (HasTag("Obstacle") && collision.CompareTag("Obstacle"));
-    }
-
-    private bool HasTag(string tag)
-    {
-        try { return UnityEditorInternal.InternalEditorUtility.tags.Contains(tag); }
-        catch { return false; }
+        // Використовуємо .tag для "Obstacle" — це безпечно працює у білді, 
+        // навіть якщо такий тег не створений у налаштуваннях проекту.
+        return collision.CompareTag("Wall") || collision.gameObject.tag == "Obstacle";
     }
 
     // Логіка завершення польоту
@@ -103,7 +99,7 @@ public class Bomb : Bullet
         SpriteRenderer sr = GetComponent<SpriteRenderer>();
         if (sr != null && !string.IsNullOrEmpty(spell.texture_path))
         {
-            string path =spell.texture_path;
+            string path = spell.texture_path;
             Sprite loadedSprite = Resources.Load<Sprite>(path);
             if (loadedSprite != null)
             {

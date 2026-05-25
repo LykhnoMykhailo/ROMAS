@@ -7,6 +7,11 @@ public class DungeonGenerator
 
     public void Generate(Agressive_Location location)
     {
+        // -----------------------------------------------------------
+        // НОВЕ: Очищаємо сцену від старих ворогів перед генерацією
+        // -----------------------------------------------------------
+        ClearOldEnemies();
+
         roomMap.Clear();
         location.GeneratedRooms.Clear();
 
@@ -29,6 +34,23 @@ public class DungeonGenerator
 
         // Записуємо результат в локацію
         location.GeneratedRooms.AddRange(roomMap.Values);
+    }
+
+    // -----------------------------------------------------------
+    // НОВИЙ МЕТОД: Знаходить усіх ворогів на сцені та видаляє їх
+    // -----------------------------------------------------------
+    private void ClearOldEnemies()
+    {
+        // Шукаємо всіх об'єктів на сцені, які мають скрипт Enemy
+        Enemy[] oldEnemies = Object.FindObjectsOfType<Enemy>();
+
+        foreach (Enemy enemy in oldEnemies)
+        {
+            if (enemy != null)
+            {
+                Object.Destroy(enemy.gameObject);
+            }
+        }
     }
 
     private void GenerateBranch(Vector2Int startPoint, int length)

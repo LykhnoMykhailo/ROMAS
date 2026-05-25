@@ -39,7 +39,7 @@ namespace GameCore.Entities
         public void TakeDmg(float dmg)
         {
             this.take_dmg(dmg);
-            if (this.is_alive())
+            if (!(this.is_alive()))
             {
                 GameManager.Instance.HandlePlayerDeath();
             }
